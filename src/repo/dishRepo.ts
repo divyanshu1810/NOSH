@@ -17,26 +17,14 @@ export const getAllDishes = async (
   limit: number,
   offset: number
 ): Promise<Dish[]> => {
-  const dishes = await Dish.findAll({
+  return await Dish.findAll({
     limit: limit,
     offset: offset,
     order: [["createdAt", "DESC"]],
+    attributes: ["dishId", "dishName", "imageUrl", "isPublished"],
   });
-  console.log(`Retrieved ${dishes.length} dishes from the database.`);
-  return dishes;
 };
 
-export const toggleDishPublishedStatus = async (
-  dishId: string
-): Promise<void> => {
-  const dish = await Dish.findOne({ where: { dishId } });
-  if (!dish) {
-    throw new Error(`Dish with ID ${dishId} not found.`);
-  }
-
-  dish.isPublished = !dish.isPublished;
-  await dish.save();
-  console.log(
-    `Toggled published status for dish with ID ${dishId}. Now published: ${dish.isPublished}`
-  );
-};
+export const getDishById = async (dishId: string): Promise<Dish | null> => {
+  return await Dish.findOne({ where: { dishId } });
+}
