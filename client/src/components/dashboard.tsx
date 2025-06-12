@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDishes } from '../hooks/useDishes';
+import { ConnectionStatus } from './ConnectionStatus';
+import { useWebSocket } from '../hooks/useWebsocket';
 import { DishCard } from './dishCard';
 import { StatCard } from './statCard';
 
 export const Dashboard: React.FC = () => {
   const { data, isLoading, error, refetch } = useDishes(10, 0);
+  const { connect } = useWebSocket();
+
+  useEffect(() => {
+    connect();
+  }, [connect]);
 
   if (isLoading) {
     return (
@@ -33,12 +40,15 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>🍽️ Dish Management Dashboard</h1>
+        <div className="header-top">
+          <h1>🍽️ Dish Management Dashboard</h1>
+          <ConnectionStatus />
+        </div>
         <p>Manage your restaurant's dish catalog</p>
         <div className="stats">
           <StatCard number={dishes.length} label="Total Dishes" />
-          <StatCard number={dishes.filter(dish => dish.isPublished).length} label="Published" />
-          <StatCard number={dishes.filter(dish => !dish.isPublished).length} label="Unpublished" />
+          <StatCard number={dishes.filter(dish => dish.isPublished).length} label="Published Dishes" />
+          <StatCard number={dishes.filter(dish => !dish.isPublished).length} label="Draft Dishes" />
         </div>
       </header>
 
