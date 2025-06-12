@@ -3,6 +3,7 @@ import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import http from 'http';
+import cors from 'cors';
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 import { handleError } from './helpers/error';
@@ -12,6 +13,7 @@ import { initializeDatabase } from './database/authenticate';
 
 const app: express.Application = express();
 
+app.use(cors());
 app.use(httpLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
