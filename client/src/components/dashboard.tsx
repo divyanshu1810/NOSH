@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDishes } from '../hooks/useDishes';
 import { DishCard } from './dishCard';
+import { StatCard } from './statCard';
 
 export const Dashboard: React.FC = () => {
   const { data, isLoading, error, refetch } = useDishes(10, 0);
@@ -35,22 +36,9 @@ export const Dashboard: React.FC = () => {
         <h1>🍽️ Dish Management Dashboard</h1>
         <p>Manage your restaurant's dish catalog</p>
         <div className="stats">
-          <div className="stat">
-            <span className="stat-number">{dishes.length}</span>
-            <span className="stat-label">Total Dishes</span>
-          </div>
-          <div className="stat">
-            <span className="stat-number">
-              {dishes.filter(dish => dish.isPublished).length}
-            </span>
-            <span className="stat-label">Published</span>
-          </div>
-          <div className="stat">
-            <span className="stat-number">
-              {dishes.filter(dish => !dish.isPublished).length}
-            </span>
-            <span className="stat-label">Unpublished</span>
-          </div>
+          <StatCard number={dishes.length} label="Total Dishes" />
+          <StatCard number={dishes.filter(dish => dish.isPublished).length} label="Published" />
+          <StatCard number={dishes.filter(dish => !dish.isPublished).length} label="Unpublished" />
         </div>
       </header>
 
