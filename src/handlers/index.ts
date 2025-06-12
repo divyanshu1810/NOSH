@@ -5,6 +5,10 @@ import {
   getDishById,
 } from "../repo/dishRepo";
 
+
+/**
+ * @deprecated This function is deprecated as this was created to bulk create dishes
+ */
 export const createDishes = async (
   req: Request,
   res: Response,
